@@ -6,21 +6,29 @@ sudo apt-get install gcc g++ binutils patch bzip2 flex bison make autoconf gette
 #Download source code of OPENWRT.
 
 cd /opt
-sudo git clone https://github.com/openwrt-mirror/openwrt
+sudo wget http://downloads.openwrt.org/snapshots/trunk/ar71xx/nand/OpenWrt-ImageBuilder-ar71xx-nand.Linux-x86_64.tar.bz2
 
-download source code of shadowsocks.
-cd /opt/openwrt/package
-sudo git clone https://github.com/madeye/shadowsocks-libev.git
+sudo tar -xjf OpenWrt-ImageBuilder-ar71xx-nand.Linux-x86_64.tar.bz2
 
-cd /opt/openwrt
-sudo ./scripts/feeds update -a 
-sudo ./scripts/feeds install -a 
-sudo make defconfig
+cd OpenWrt-ImageBuilder-ar71xx-nand.Linux-x86_64
+make info
+
+#available profile
+#WNDR4300:
+	#NETGEAR WNDR3700v4/WNDR4300
+#	Packages: kmod-usb-core kmod-usb-ohci kmod-usb2 kmod-ledtrig-usbdev
+
+
 
 #install openssl library
 sudo apt-get install openssl
 #WNDR4300完全使用128Mflash：
 backup makefile first.
+
+packages :
+echo $(wget -qO - http://downloads.openwrt.org/snapshots/trunk/ar71xx/generic/config | sed -ne 's/^CONFIG_PACKAGE_\([a-z0-9-]*\)=y/\1/ip')
+
+base-files busybox dnsmasq-full dropbear firewall fstools jsonfilter libc libgcc mtd netifd opkg procd swconfig ubox ubus ubusd uci usign kmod-crypto-aes kmod-crypto-arc4 kmod-crypto-core kmod-ledtrig-usbdev kmod-lib-crc-ccitt kmod-nls-base kmod-ip6tables kmod-ipt-conntrack kmod-ipt-core kmod-ipt-nat kmod-nf-conntrack kmod-nf-conntrack6 kmod-nf-ipt kmod-nf-ipt6 kmod-nf-nat kmod-nf-nathelper kmod-ipv6 kmod-ppp kmod-pppoe kmod-pppox kmod-slhc kmod-gpio-button-hotplug kmod-usb-core kmod-usb-ohci kmod-usb2 kmod-usb3 kmod-ath kmod-ath9k kmod-ath9k-common kmod-cfg80211 kmod-mac80211 libip4tc libip6tc libxtables libblobmsg-json libiwinfo libjson-c libnl-tiny libubox libubus libuci ip6tables iptables hostapd-common iw odhcp6c odhcpd ppp ppp-mod-pppoe wpad-mini iwinfo jshn libjson-script uboot-envtools luci-ssl
 
 cp ./openwrt/target/linux/ar71xx/image/Makefile  ./openwrt/target/linux/ar71xx/image/Makefile.bak
 sudo vi ./target/linux/ar71xx/image/Makefile
